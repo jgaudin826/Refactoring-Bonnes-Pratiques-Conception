@@ -39,7 +39,7 @@ func CancelBooking(w http.ResponseWriter, r *http.Request) {
 	} else {
 		isBooking := bookingId < len(api.GetBookings("data.json"))
 		if isBooking {
-			api.CancelBooking(bookingId)
+			api.RemoveBooking("data.json", api.GetCookie(r),bookingId)
 		} else {
 			fmt.Println("Reservation Inexistante !")
 			return
