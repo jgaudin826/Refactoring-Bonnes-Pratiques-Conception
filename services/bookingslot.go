@@ -56,3 +56,15 @@ func BookingSlot(fileName, email string, serviceID int, slot string) {
 	api.AddBooking(fileName, newBooking)
 	api.RemoveSlotFromService(fileName, newBooking.ID, []string{slot})
 }
+
+func GetBookingsByEmail(fileName, email string) []api.Booking {
+	dataBookings := api.GetBookings(fileName)
+	var userBookings []api.Booking
+
+	for _, booking := range dataBookings {
+		if booking.Email == email {
+			userBookings = append(userBookings, booking)
+		}
+	}
+	return userBookings
+}

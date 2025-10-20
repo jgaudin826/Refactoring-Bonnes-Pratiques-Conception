@@ -32,9 +32,9 @@ func home(w http.ResponseWriter, r *http.Request) {
 		Bookings []services.Booking
 
 	}{
-		User:
-		Services:
-		Bookings:
+		//User: 
+		Services: api.GetServices("data/data.json"),
+		Bookings: services.GetBookingsByEmail("data/data.json", email),
 	}
 
 	err = tmpl.Execute(w, homePage)
