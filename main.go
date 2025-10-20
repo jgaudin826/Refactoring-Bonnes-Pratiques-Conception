@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"refactoring/services"
 )
 
 var port = ":8080"
@@ -18,8 +19,23 @@ func home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	email := api.GetCookie(r)
+	if email == "" {
+		email = "non connecté"
+	} else {
+		
+	}
+
 	homePage := struct {
-	}{}
+		User services.User
+		Services []services.Service
+		Bookings []services.Booking
+
+	}{
+		User:
+		Services:
+		Bookings:
+	}
 
 	err = tmpl.Execute(w, homePage)
 	if err != nil {
@@ -34,6 +50,10 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", FileServer))
 
 	http.HandleFunc("/", home)
+
+	// FORMS
+	http.HandleFunc("/connect", services.Connect)
+	http.HandleFunc("/disconnect", services.Disconnect)
 
 	fmt.Println("Server Start at:")
 	fmt.Println("http://localhost" + port)

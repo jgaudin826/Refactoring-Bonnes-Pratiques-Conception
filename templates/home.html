@@ -13,11 +13,15 @@
 <h1>Cas d'étude – Application de gestion de services</h1>
 
 <div class="row card">
-  <form method="post">
-    <label>Votre email (login bricolé): <input name="mail" value=""></label>
+  <form action="/connect" method="post">
+    <label>Votre email: <input name="email" value=""></label>
     <button class="btn">Se connecter</button>
   </form>
-  <div>Rôle: <b></b></div>
+  <form action="/disconnect" method="post">
+    <button class="btn">Se déconnecter</button>
+  </form>
+  <div>Utilisateur: <b>{{.Email}}</b></div>
+  <div>Rôle: <b>{{.Role}}</b></div>
 </div>
 
 <div class="row">
@@ -40,6 +44,7 @@
   </div>
 </div>
 
+{{if .User.Role == "admin"}}
 <div class="card">
   <h3>Admin </h3>
   <form method="post" class="row">
@@ -62,6 +67,6 @@
     <button class="btn danger">Annuler réservation</button>
   </form>
 </div>
-
+{{end}}
 </body>
 </html>
