@@ -47,21 +47,21 @@
 {{if .User.Role == "admin"}}
 <div class="card">
   <h3>Admin </h3>
-  <form method="post" class="row">
+  <form action="/AddService" method="post" class="row">
     <input type="hidden" name="act" value="addservice">
     <input name="name" placeholder="Nom du service">
     <select name="type"><option>room</option><option>equipment</option><option>autre</option></select>
     <button class="btn">Ajouter service</button>
   </form>
 
-  <form method="post" class="row">
+  <form action="/AddSlot" method="post" class="row">
     <input type="hidden" name="act" value="addslot">
     <input name="sid" placeholder="Service ID">
     <input name="slot" type="datetime-local">
     <button class="btn">Ajouter créneau</button>
   </form>
 
-  <form method="post" class="row">
+  <form action="/CancelBooking" method="post" class="row">
     <input type="hidden" name="act" value="cancel">
     <input name="bid" placeholder="Booking ID">
     <button class="btn danger">Annuler réservation</button>
