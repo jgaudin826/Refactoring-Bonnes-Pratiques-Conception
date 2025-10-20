@@ -51,17 +51,17 @@ func GetDataJson(fileName string) Data {
 	return result
 }
 
-func getUsers(fileName string) []User {
+func GetUsers(fileName string) []User {
 	allData := GetDataJson(fileName)
 	return allData.Users
 }
 
-func getServices(fileName string) []Service {
+func GetServices(fileName string) []Service {
 	allData := GetDataJson(fileName)
 	return allData.Services
 }
 
-func getBookings(fileName string) []Booking {
+func GetBookings(fileName string) []Booking {
 	allData := GetDataJson(fileName)
 	return allData.Bookings
 }
@@ -83,7 +83,7 @@ func AddBooking(fileName string, newBooking Booking) {
 	}
 }
 
-func addService(fileName string, newService Service) {
+func AddService(fileName string, newService Service) {
 	allData := GetDataJson(fileName)
 	allData.Services = append(allData.Services, newService)
 
@@ -100,7 +100,7 @@ func addService(fileName string, newService Service) {
 	}
 }
 
-func addUser(fileName string, newUser User) {
+func AddUser(fileName string, newUser User) {
 	allData := GetDataJson(fileName)
 	allData.Users = append(allData.Users, newUser)
 
