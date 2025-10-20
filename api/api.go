@@ -192,3 +192,37 @@ func RemoveSlotFromService(fileName string, serviceID int, slotsToRemove []strin
 		return
 	}
 }
+
+func RemoveBooking(fileName, email string, bookingID int) {
+	data := GetDataJson(fileName)
+	var updatedBookings []Booking
+	found := false
+
+	for _, b := range data.Bookings {
+		if b.ID == bookingID && b.Email == email {
+			found = true
+			continue
+		}
+		updatedBookings = append(updatedBookings, b)
+	}
+
+	if !found {
+		fmt.Printf("Réservation #%d introuvable ou non autorisée pour %s.\n", bookingID, email)
+		return
+	}
+
+	data.Bookings = updatedBookings
+
+	jsonData, errMarshal := json.MarshalIndent(data, "", "  ")
+	if errMarshal != nil {
+		fmt.Println("Erreur conversion JSON:", errMarshal)
+		return
+	}
+
+	errWrite := os.WriteFile(fileName, jsonData, 0644)
+	if errWrite != nil {
+		fmt.Println("Erreur écriture fichier:", errWrite)
+		return
+	}
+
+}

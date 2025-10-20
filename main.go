@@ -38,7 +38,9 @@ func home(w http.ResponseWriter, r *http.Request) {
 		Services []api.Service
 		Bookings []api.Booking
 	}{
-		User: user,
+		User:     user,
+		Services: api.GetServices("data/data.json"),
+		Bookings: services.GetBookingsByEmail("data/data.json", email),
 	}
 
 	err = tmpl.Execute(w, homePage)
@@ -58,6 +60,9 @@ func main() {
 	// FORMS
 	http.HandleFunc("/connect", services.Connect)
 	http.HandleFunc("/disconnect", services.Disconnect)
+	http.HandleFunc("/AddService", services.AddService)
+	http.HandleFunc("/AddSlot", services.AddSlot)
+	http.HandleFunc("/CancelBooking", services.CancelBooking)
 
 	fmt.Println("Server Start at:")
 	fmt.Println("http://localhost" + port)
