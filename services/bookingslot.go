@@ -7,13 +7,12 @@ import (
 
 func BookingSlot(fileName, email string, serviceID int, slot string) {
 	dataBookings := api.GetBookings(fileName)
-
 	dataServices := api.GetServices(fileName)
 
 	var service *api.Service
-	for i, s := range dataServices {
-		if s.ID == serviceID {
-			service = &dataServices[i]
+	for index, services := range dataServices {
+		if services.ID == serviceID {
+			service = &dataServices[index]
 			break
 		}
 	}
@@ -23,8 +22,8 @@ func BookingSlot(fileName, email string, serviceID int, slot string) {
 	}
 
 	slotExists := false
-	for _, s := range service.Slots {
-		if s == slot {
+	for _, slots := range service.Slots {
+		if slots == slot {
 			slotExists = true
 			break
 		}
@@ -34,15 +33,15 @@ func BookingSlot(fileName, email string, serviceID int, slot string) {
 		return
 	}
 
-	for _, b := range dataBookings {
-		if b.Email == email && b.Service == serviceID && b.Slot == slot {
+	for _, bookings := range dataBookings {
+		if bookings.Email == email && bookings.Service == serviceID && bookings.Slot == slot {
 			fmt.Println("Vous avez déjà réservé ce créneau.")
 			return
 		}
 	}
 
-	for _, b := range dataBookings {
-		if b.Service == serviceID && b.Slot == slot {
+	for _, bookings := range dataBookings {
+		if bookings.Service == serviceID && bookings.Slot == slot {
 			fmt.Println("Ce créneau est déjà complet.")
 			return
 		}
@@ -55,6 +54,8 @@ func BookingSlot(fileName, email string, serviceID int, slot string) {
 	}
 	api.AddBooking(fileName, newBooking)
 	api.RemoveSlotFromService(fileName, newBooking.ID, []string{slot})
+	fmt.Println("Réservation réussie.")
+	return
 }
 
 func GetBookingsByEmail(fileName, email string) []api.Booking {
