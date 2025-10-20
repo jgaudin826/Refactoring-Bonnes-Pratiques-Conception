@@ -56,14 +56,14 @@
 
   <form action="/AddSlot" method="post" class="row">
     <input type="hidden" name="act" value="addslot">
-    <input name="sid" placeholder="Service ID">
+    <input name="serviceid" type="number" placeholder="Service ID">
     <input name="slot" type="datetime-local">
     <button class="btn">Ajouter créneau</button>
   </form>
 
   <form action="/CancelBooking" method="post" class="row">
     <input type="hidden" name="act" value="cancel">
-    <input name="bid" placeholder="Booking ID">
+    <input name="bookingId" type="number" placeholder="Booking ID">
     <button class="btn danger">Annuler réservation</button>
   </form>
 </div>
