@@ -32,8 +32,8 @@ type Data struct {
 	Bookings []Booking `json:"bookings"`
 }
 
-func getDataJson() Data {
-	allData, errorJsonRead := ioutil.ReadFile("../data/data.json")
+func GetDataJson(fileName string) Data {
+	allData, errorJsonRead := ioutil.ReadFile(fileName)
 	if errorJsonRead != nil {
 		fmt.Println("Erreur:", errorJsonRead)
 		return Data{}
