@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"refactoring/api"
 	"refactoring/services"
 )
 
@@ -18,23 +19,26 @@ func home(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal error, template not found.", http.StatusInternalServerError)
 		return
 	}
-
-	email := api.GetCookie(r)
+	var user api.User
+	email := services.GetCookie(r)
 	if email == "" {
-		email = "non connecté"
+
 	} else {
-		
+		userList := api.GetUsers("data/data.json")
+		for _, users := range userList {
+			if users.Email == email {
+				user = users
+				break
+			}
+		}
 	}
 
 	homePage := struct {
-		User services.User
-		Services []services.Service
-		Bookings []services.Booking
-
+		User     api.User
+		Services []api.Service
+		Bookings []api.Booking
 	}{
-		User:
-		Services:
-		Bookings:
+		User: user,
 	}
 
 	err = tmpl.Execute(w, homePage)
