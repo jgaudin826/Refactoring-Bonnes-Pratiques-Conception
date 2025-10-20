@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Services</title>
+  <script src="../assets/app.js"></script>
+  <link rel="" href="../assets/style.css">
+</head>
+<body>
+
+<h1>Cas d'étude – Application de gestion de services</h1>
+
+<div class="row card">
+  <form method="post">
+    <label>Votre email (login bricolé): <input name="mail" value=""></label>
+    <button class="btn">Se connecter</button>
+  </form>
+  <div>Rôle: <b></b></div>
+</div>
+
+<div class="row">
+  <div class="card" style="flex:1">
+    <h3>Services</h3>
+    <div id="svc"></div>
+  </div>
+  <div class="card" style="flex:1">
+    <h3>Réserver</h3>
+    <form method="post">
+      <input type="hidden" name="act" value="book">
+      <label>Service ID: <input name="servicesId" type=text list=serviceIdList></label><br>
+            <datalist id=serviceIdList >
+               {{for services in .servicesId}}
+                    <option> services
+               {{end}}
+            </datalist>
+      <label>Crenau: <input name="slots" type="datetime-local" ></label><br>
+      <button class="btn">Réserver</button>
+    </form>
+  </div>
+  <div class="card" style="flex:1">
+    <h3>Mes réservations</h3>
+    <div id="bk"></div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Admin (pas sécurisé)</h3>
+  <form method="post" class="row">
+    <input type="hidden" name="act" value="addservice">
+    <input name="name" placeholder="Nom du service">
+    <select name="type"><option>room</option><option>equipment</option><option>autre</option></select>
+    <button class="btn">Ajouter service</button>
+  </form>
+
+  <form method="post" class="row">
+    <input type="hidden" name="act" value="addslot">
+    <input name="sid" placeholder="Service ID">
+    <input name="slot" placeholder="YYYY-MM-DD HH:MM">
+    <button class="btn">Ajouter créneau</button>
+  </form>
+
+  <form method="post" class="row">
+    <input type="hidden" name="act" value="cancel">
+    <input name="bid" placeholder="Booking ID">
+    <button class="btn danger">Annuler réservation</button>
+  </form>
+</div>
+
+</body>
+</html>

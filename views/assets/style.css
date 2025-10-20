@@ -1,0 +1,9 @@
+body{font-family:Arial;margin:20px}
+
+.row{display:flex;gap:12px;margin-bottom:8px}
+
+.card{box-shadow: 0 0 0 1px #ddd; border:1px solid #aaa;padding:10px;border-radius:6px}
+
+.btn{padding:6px 8px;border:1px solid #222;background:#f2f2f2;cursor:pointer}
+
+.danger{background:#ffd0d0}
