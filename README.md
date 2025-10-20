@@ -1,4 +1,5 @@
 # Refactoring – Bonnes Pratiques de Conception
+Groupe : Kelyan DANIS, Jeremy GAUDIN, Cassian JOLY
 
 ## Instructions
 

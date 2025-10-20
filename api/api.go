@@ -121,9 +121,9 @@ func AddSlotToService(fileName string, serviceID int, newSlots []string) {
 	allData := GetDataJson(fileName)
 	found := false
 
-	for i, service := range allData.Services {
+	for index, service := range allData.Services {
 		if service.ID == serviceID {
-			allData.Services[i].Slots = append(allData.Services[i].Slots, newSlots...)
+			allData.Services[index].Slots = append(allData.Services[index].Slots, newSlots...)
 			found = true
 			break
 		}
@@ -159,8 +159,8 @@ func RemoveSlotFromService(fileName string, serviceID int, slotsToRemove []strin
 			var updatedSlots []string
 			for _, slot := range service.Slots {
 				shouldRemove := false
-				for _, s := range slotsToRemove {
-					if slot == s {
+				for _, slot := range slotsToRemove {
+					if slot == slot {
 						shouldRemove = true
 						break
 					}
@@ -198,12 +198,12 @@ func RemoveBooking(fileName, email string, bookingID int) {
 	var updatedBookings []Booking
 	found := false
 
-	for _, b := range data.Bookings {
-		if b.ID == bookingID && b.Email == email {
+	for _, bookings := range data.Bookings {
+		if bookings.ID == bookingID && bookings.Email == email {
 			found = true
 			continue
 		}
-		updatedBookings = append(updatedBookings, b)
+		updatedBookings = append(updatedBookings, bookings)
 	}
 
 	if !found {
