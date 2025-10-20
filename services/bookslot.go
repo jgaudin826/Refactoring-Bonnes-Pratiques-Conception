@@ -5,7 +5,7 @@ import (
 	"refactoring/api"
 )
 
-func BookSlot(fileName, email string, serviceID int, slot string) {
+func BookingSlot(fileName, email string, serviceID int, slot string) {
 	dataBookings := api.GetBookings(fileName)
 
 	dataServices := api.GetServices(fileName)
@@ -18,7 +18,7 @@ func BookSlot(fileName, email string, serviceID int, slot string) {
 		}
 	}
 	if service == nil {
-		fmt.Println("❌ Service introuvable.")
+		fmt.Println("Service introuvable.")
 		return
 	}
 
@@ -30,20 +30,20 @@ func BookSlot(fileName, email string, serviceID int, slot string) {
 		}
 	}
 	if !slotExists {
-		fmt.Println("❌ Ce créneau n'existe pas pour ce service.")
+		fmt.Println("Ce créneau n'existe pas pour ce service.")
 		return
 	}
 
 	for _, b := range dataBookings {
 		if b.Email == email && b.Service == serviceID && b.Slot == slot {
-			fmt.Println("⚠️ Vous avez déjà réservé ce créneau.")
+			fmt.Println("Vous avez déjà réservé ce créneau.")
 			return
 		}
 	}
 
 	for _, b := range dataBookings {
 		if b.Service == serviceID && b.Slot == slot {
-			fmt.Println("⚠️ Ce créneau est déjà complet.")
+			fmt.Println("Ce créneau est déjà complet.")
 			return
 		}
 	}
