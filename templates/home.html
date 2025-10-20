@@ -34,8 +34,7 @@
     <form method="post">
       <input type="hidden" name="act" value="book">
       <label>Service ID: <input name="servicesId" type=text list=serviceIdList></label><br>
-            
-      <label>Crenau: <input name="slots" type="datetime-local" ></label><br>
+      <label>Crenau: <input name="slot" placeholder="2025-10-20 09:00"></label><br>
       <button class="btn">Réserver</button>
     </form>
   </div>
@@ -45,8 +44,9 @@
   </div>
 </div>
 
+{{if .User.Role == "admin"}}
 <div class="card">
-  <h3>Admin (pas sécurisé)</h3>
+  <h3>Admin </h3>
   <form method="post" class="row">
     <input type="hidden" name="act" value="addservice">
     <input name="name" placeholder="Nom du service">
@@ -57,7 +57,7 @@
   <form method="post" class="row">
     <input type="hidden" name="act" value="addslot">
     <input name="sid" placeholder="Service ID">
-    <input name="slot" placeholder="YYYY-MM-DD HH:MM">
+    <input name="slot" type="datetime-local">
     <button class="btn">Ajouter créneau</button>
   </form>
 
@@ -67,6 +67,6 @@
     <button class="btn danger">Annuler réservation</button>
   </form>
 </div>
-
+{{end}}
 </body>
 </html>
