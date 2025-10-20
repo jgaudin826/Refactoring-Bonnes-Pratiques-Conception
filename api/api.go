@@ -148,3 +148,47 @@ func AddSlotToService(fileName string, serviceID int, newSlots []string) {
 
 	fmt.Printf("Slots ajoutés au service %d avec succès !\n", serviceID)
 }
+
+func RemoveSlotFromService(fileName string, serviceID int, slotsToRemove []string) {
+	allData := GetDataJson(fileName)
+	found := false
+
+	for i, service := range allData.Services {
+		if service.ID == serviceID {
+			found = true
+			var updatedSlots []string
+			for _, slot := range service.Slots {
+				shouldRemove := false
+				for _, s := range slotsToRemove {
+					if slot == s {
+						shouldRemove = true
+						break
+					}
+				}
+				if !shouldRemove {
+					updatedSlots = append(updatedSlots, slot)
+				}
+			}
+
+			allData.Services[i].Slots = updatedSlots
+			break
+		}
+	}
+
+	if !found {
+		fmt.Printf("Service avec ID %d non trouvé.\n", serviceID)
+		return
+	}
+
+	jsonData, errorJsonMarshal := json.MarshalIndent(allData, "", "  ")
+	if errorJsonMarshal != nil {
+		fmt.Printf("Erreur conversion JSON: %v\n", errorJsonMarshal)
+		return
+	}
+
+	errorJsonWrite := os.WriteFile(fileName, jsonData, 0644)
+	if errorJsonWrite != nil {
+		fmt.Printf("Erreur écriture fichier: %v\n", errorJsonWrite)
+		return
+	}
+}
