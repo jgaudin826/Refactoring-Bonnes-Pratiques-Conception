@@ -3,10 +3,12 @@
 <head>
   <meta charset="utf-8">
   <title>Services</title>
-  <script src="../assets/app.js"></script>
+  <script src="/static/scripts/app.js" type="module"></script>
   <link rel="" href="../assets/style.css">
 </head>
 <body>
+  <!-- Scripts -->
+  
 
 <h1>Cas d'étude – Application de gestion de services</h1>
 
@@ -28,11 +30,7 @@
     <form method="post">
       <input type="hidden" name="act" value="book">
       <label>Service ID: <input name="servicesId" type=text list=serviceIdList></label><br>
-            <datalist id=serviceIdList >
-               {{for services in .servicesId}}
-                    <option> services
-               {{end}}
-            </datalist>
+            
       <label>Crenau: <input name="slots" type="datetime-local" ></label><br>
       <button class="btn">Réserver</button>
     </form>
