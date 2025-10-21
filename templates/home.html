@@ -13,11 +13,11 @@
 <h1>Cas d'étude – Application de gestion de services</h1>
 
 <div class="row card">
-  <form action="/connect" method="post">
+  <form action="/Connect" method="post">
     <label>Votre email: <input name="email" value=""></label>
     <button class="btn">Se connecter</button>
   </form>
-  <form action="/disconnect" method="post">
+  <form action="/Disconnect" method="post">
     <button class="btn">Se déconnecter</button>
   </form>
   <div>Utilisateur: <b>{{.User.Email}}</b></div>
@@ -27,11 +27,19 @@
 <div class="row">
   <div class="card" style="flex:1">
     <h3>Services</h3>
-    <div id="svc"></div>
+    <div id="svc">
+      {{range .Services}}
+        <p>ID: {{.ID}} | Nom: {{.Name}} | Type: {{.Type}}</p>
+        <p>créneaux:
+        {{range .Slots}}
+          - {{.}}
+        {{end}}</p>
+      {{end}}
+    </div>
   </div>
   <div class="card" style="flex:1">
     <h3>Réserver</h3>
-    <form method="post">
+    <form action="/BookingSlot" method="post">
       <input type="hidden" name="act" value="book">
       <label>Service ID: <input name="servicesId" type=text list=serviceIdList></label><br>
       <label>Crenau: <input name="slot" placeholder="2025-10-20 09:00"></label><br>
@@ -40,7 +48,11 @@
   </div>
   <div class="card" style="flex:1">
     <h3>Mes réservations</h3>
-    <div id="bk"></div>
+    <div id="bk">
+      {{range .Bookings}}
+        <p>ID: {{.ID}} | Service ID: {{.Service}} | Créneau: {{.Slot}}</p>
+      {{end}}
+    </div>
   </div>
 </div>
 

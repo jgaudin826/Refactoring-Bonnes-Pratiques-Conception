@@ -58,11 +58,12 @@ func main() {
 	http.HandleFunc("/", home)
 
 	// FORMS
-	http.HandleFunc("/connect", services.Connect)
-	http.HandleFunc("/disconnect", services.Disconnect)
+	http.HandleFunc("/Connect", services.Connect)
+	http.HandleFunc("/Disconnect", services.Disconnect)
 	http.HandleFunc("/AddService", services.AddService)
 	http.HandleFunc("/AddSlot", services.AddSlot)
 	http.HandleFunc("/CancelBooking", services.CancelBooking)
+	http.HandleFunc("/BookingSlot", services.BookingSlot)
 
 	fmt.Println("Server Start at:")
 	fmt.Println("http://localhost" + port)

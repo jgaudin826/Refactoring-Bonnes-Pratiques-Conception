@@ -9,7 +9,7 @@ func Connect(w http.ResponseWriter, r *http.Request) {
 	email := r.FormValue("email")
 	SetCookie(email, w)
 	emailExists := false
-	userList := api.GetUsers("data.json")
+	userList := api.GetUsers("data/data.json")
 	for _, user := range userList {
 		if user.Email == email {
 			emailExists = true
@@ -22,7 +22,7 @@ func Connect(w http.ResponseWriter, r *http.Request) {
 			Email: email,
 			Role:  "user",
 		}
-		api.AddUser("data.json", newUser)
+		api.AddUser("data/data.json", newUser)
 	}
 }
 

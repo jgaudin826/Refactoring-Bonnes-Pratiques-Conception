@@ -2,13 +2,22 @@ package services
 
 import (
 	"fmt"
+	"net/http"
 	"refactoring/api"
+	"strconv"
 )
 
-func BookingSlot(fileName, email string, serviceID int, slot string) {
-	dataBookings := api.GetBookings(fileName)
-	dataServices := api.GetServices(fileName)
-
+func BookingSlot(w http.ResponseWriter, r *http.Request) {
+	email := r.FormValue("email")
+	ID := r.FormValue("servicesId")
+	slot := r.FormValue("slot")
+	dataBookings := api.GetBookings("data/data.json")
+	dataServices := api.GetServices("data/data.json")
+	serviceID, err := strconv.Atoi(ID)
+	if err != nil {
+		fmt.Println("L'id n'est pas valide !")
+		return
+	}
 	var service *api.Service
 	for index, services := range dataServices {
 		if services.ID == serviceID {
@@ -52,8 +61,8 @@ func BookingSlot(fileName, email string, serviceID int, slot string) {
 		Service: serviceID,
 		Slot:    slot,
 	}
-	api.AddBooking(fileName, newBooking)
-	api.RemoveSlotFromService(fileName, newBooking.ID, []string{slot})
+	api.AddBooking("data/data.json", newBooking)
+	api.RemoveSlotFromService("data/data.json", newBooking.ID, []string{slot})
 	fmt.Println("Réservation réussie.")
 	return
 }

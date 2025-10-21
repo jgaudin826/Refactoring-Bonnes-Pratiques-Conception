@@ -46,8 +46,6 @@ func GetDataJson(fileName string) Data {
 		fmt.Println("Erreur parsing JSON:", errorParsing)
 		return Data{}
 	}
-
-	fmt.Printf("%+v\n", result)
 	return result
 }
 
@@ -69,7 +67,7 @@ func GetBookings(fileName string) []Booking {
 func AddBooking(fileName string, newBooking Booking) {
 	allData := GetDataJson(fileName)
 	allData.Bookings = append(allData.Bookings, newBooking)
-
+	fmt.Printf("Nouvelle réservation ajoutée: %+v\n", newBooking)
 	jsonData, errorJsonMarshal := json.Marshal(allData)
 	if errorJsonMarshal != nil {
 		fmt.Printf("Erreur conversion JSON: %v\n", errorJsonMarshal)
