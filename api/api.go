@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 )
 
 type Service struct {
@@ -115,13 +116,13 @@ func AddUser(fileName string, newUser User) {
 	}
 }
 
-func AddSlotToService(fileName string, serviceID int, newSlots []string) {
+func AddSlotToService(fileName string, serviceID int, newSlots string) {
 	allData := GetDataJson(fileName)
 	found := false
 
 	for index, service := range allData.Services {
 		if service.ID == serviceID {
-			allData.Services[index].Slots = append(allData.Services[index].Slots, newSlots...)
+			allData.Services[index].Slots = append(allData.Services[index].Slots, newSlots)
 			found = true
 			break
 		}
@@ -147,7 +148,7 @@ func AddSlotToService(fileName string, serviceID int, newSlots []string) {
 	fmt.Printf("Slots ajoutés au service %d avec succès !\n", serviceID)
 }
 
-func RemoveSlotFromService(fileName string, serviceID int, slotsToRemove []string) {
+func RemoveSlotFromService(fileName string, serviceID int, slotToRemove string) {
 	allData := GetDataJson(fileName)
 	found := false
 
@@ -156,14 +157,8 @@ func RemoveSlotFromService(fileName string, serviceID int, slotsToRemove []strin
 			found = true
 			var updatedSlots []string
 			for _, slot := range service.Slots {
-				shouldRemove := false
-				for _, slot := range slotsToRemove {
-					if slot == slot {
-						shouldRemove = true
-						break
-					}
-				}
-				if !shouldRemove {
+				fmt.Print(slot)
+				if strings.TrimSpace(slot) != strings.TrimSpace(slotToRemove) {
 					updatedSlots = append(updatedSlots, slot)
 				}
 			}
@@ -178,39 +173,37 @@ func RemoveSlotFromService(fileName string, serviceID int, slotsToRemove []strin
 		return
 	}
 
-	jsonData, errorJsonMarshal := json.MarshalIndent(allData, "", "  ")
-	if errorJsonMarshal != nil {
-		fmt.Printf("Erreur conversion JSON: %v\n", errorJsonMarshal)
+	jsonData, err := json.MarshalIndent(allData, "", "  ")
+	if err != nil {
+		fmt.Printf("Erreur conversion JSON: %v\n", err)
 		return
 	}
 
-	errorJsonWrite := os.WriteFile(fileName, jsonData, 0644)
-	if errorJsonWrite != nil {
-		fmt.Printf("Erreur écriture fichier: %v\n", errorJsonWrite)
+	if err := os.WriteFile(fileName, jsonData, 0644); err != nil {
+		fmt.Printf("Erreur écriture fichier: %v\n", err)
 		return
 	}
 }
 
-func RemoveBooking(fileName, email string, bookingID int) {
+func RemoveBooking(fileName string, bookingID int) {
 	data := GetDataJson(fileName)
 	var updatedBookings []Booking
 	found := false
 
 	for _, bookings := range data.Bookings {
-		if bookings.ID == bookingID && bookings.Email == email {
+		if bookings.ID == bookingID {
 			found = true
 			continue
 		}
 		updatedBookings = append(updatedBookings, bookings)
+
 	}
 
 	if !found {
-		fmt.Printf("Réservation #%d introuvable ou non autorisée pour %s.\n", bookingID, email)
+		fmt.Printf("Réservation #%d introuvable ou non autorisée pour %s.\n", bookingID)
 		return
 	}
-
 	data.Bookings = updatedBookings
-
 	jsonData, errMarshal := json.MarshalIndent(data, "", "  ")
 	if errMarshal != nil {
 		fmt.Println("Erreur conversion JSON:", errMarshal)
@@ -223,4 +216,15 @@ func RemoveBooking(fileName, email string, bookingID int) {
 		return
 	}
 
+}
+
+func BookingExists(fileName string, bookingID int) bool {
+	bookings := GetBookings(fileName)
+
+	for _, booking := range bookings {
+		if booking.ID == bookingID {
+			return true
+		}
+	}
+	return false
 }

@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"refactoring/api"
 	"strconv"
+	"time"
 )
 
 func AddService(w http.ResponseWriter, r *http.Request) {
@@ -17,17 +18,21 @@ func AddService(w http.ResponseWriter, r *http.Request) {
 		Type: typeService,
 	}
 	api.AddService("data/data.json", newService)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+	return
 }
 
 func AddSlot(w http.ResponseWriter, r *http.Request) {
 	serviceidSlot, err := strconv.Atoi(r.FormValue("serviceid"))
-	slot := make([]string, 1)
-	slot[0] += r.FormValue("slot")
-	if err != nil {
-		fmt.Println("L'id n'est pas valide !")
+	slot, errorParse := time.Parse("2006-01-02T15:04", r.FormValue("slot"))
+	if err != nil || errorParse != nil {
+		fmt.Println("L'id ou le slot n'est pas valide !")
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	} else {
-		api.AddSlotToService("data/data.json", serviceidSlot, slot)
+		api.AddSlotToService("data/data.json", serviceidSlot, slot.Format("2006-01-02 15:04"))
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
 	}
 }
 
@@ -35,13 +40,17 @@ func CancelBooking(w http.ResponseWriter, r *http.Request) {
 	bookingId, err := strconv.Atoi(r.FormValue("bookingId"))
 	if err != nil {
 		fmt.Println("L'id n'est pas valide !")
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	} else {
-		isBooking := bookingId < len(api.GetBookings("data/data.json"))
+		isBooking := api.BookingExists("data/data.json", bookingId)
 		if isBooking {
-			api.RemoveBooking("data/data.json", GetCookie(r), bookingId)
+			api.RemoveBooking("data/data.json", bookingId)
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+			return
 		} else {
 			fmt.Println("Reservation Inexistante !")
+			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		}
 	}

@@ -8,14 +8,28 @@ import (
 )
 
 func BookingSlot(w http.ResponseWriter, r *http.Request) {
-	email := r.FormValue("email")
+	email := GetCookie(r)
 	ID := r.FormValue("servicesId")
 	slot := r.FormValue("slot")
+	if email == "" {
+		fmt.Println("il n'y a pas d'email")
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	} else if ID == "" {
+		fmt.Println("il n'y a pas d'ID de service")
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	} else if slot == "" {
+		fmt.Println("il n'y a pas de créneau")
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	dataBookings := api.GetBookings("data/data.json")
 	dataServices := api.GetServices("data/data.json")
 	serviceID, err := strconv.Atoi(ID)
 	if err != nil {
 		fmt.Println("L'id n'est pas valide !")
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 	var service *api.Service
@@ -27,6 +41,7 @@ func BookingSlot(w http.ResponseWriter, r *http.Request) {
 	}
 	if service == nil {
 		fmt.Println("Service introuvable.")
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 
@@ -39,12 +54,14 @@ func BookingSlot(w http.ResponseWriter, r *http.Request) {
 	}
 	if !slotExists {
 		fmt.Println("Ce créneau n'existe pas pour ce service.")
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 
 	for _, bookings := range dataBookings {
 		if bookings.Email == email && bookings.Service == serviceID && bookings.Slot == slot {
 			fmt.Println("Vous avez déjà réservé ce créneau.")
+			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		}
 	}
@@ -52,6 +69,7 @@ func BookingSlot(w http.ResponseWriter, r *http.Request) {
 	for _, bookings := range dataBookings {
 		if bookings.Service == serviceID && bookings.Slot == slot {
 			fmt.Println("Ce créneau est déjà complet.")
+			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		}
 	}
@@ -62,8 +80,8 @@ func BookingSlot(w http.ResponseWriter, r *http.Request) {
 		Slot:    slot,
 	}
 	api.AddBooking("data/data.json", newBooking)
-	api.RemoveSlotFromService("data/data.json", newBooking.ID, []string{slot})
-	fmt.Println("Réservation réussie.")
+	api.RemoveSlotFromService("data/data.json", newBooking.Service, slot)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 	return
 }
 

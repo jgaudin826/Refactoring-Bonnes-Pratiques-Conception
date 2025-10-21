@@ -13,10 +13,12 @@
 <h1>Cas d'étude – Application de gestion de services</h1>
 
 <div class="row card">
-  <form action="/Connect" method="post">
-    <label>Votre email: <input name="email" value=""></label>
-    <button class="btn">Se connecter</button>
-  </form>
+  {{ if not .User.Email }}
+    <form action="/Connect" method="post">
+      <label>Votre email: <input name="email" value=""></label>
+      <button class="btn">Se connecter</button>
+    </form>
+  {{ end }}
   <form action="/Disconnect" method="post">
     <button class="btn">Se déconnecter</button>
   </form>
