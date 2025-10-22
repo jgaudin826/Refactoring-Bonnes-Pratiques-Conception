@@ -5,9 +5,9 @@ import (
 	"refactoring/api"
 )
 
-func Connect(w http.ResponseWriter, r *http.Request) {
-	email := r.FormValue("email")
-	SetCookie(email, w)
+func Connect(write http.ResponseWriter, request *http.Request) {
+	email := request.FormValue("email")
+	SetCookie(email, write)
 	emailExists := false
 	userList := api.GetUsers("data/data.json")
 	for _, user := range userList {
@@ -24,12 +24,12 @@ func Connect(w http.ResponseWriter, r *http.Request) {
 		}
 		api.AddUser("data/data.json", newUser)
 	}
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	http.Redirect(write, request, "/", http.StatusSeeOther)
 	return
 }
 
-func Disconnect(w http.ResponseWriter, r *http.Request) {
-	DeleteCookie(w)
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+func Disconnect(write http.ResponseWriter, request *http.Request) {
+	DeleteCookie(write)
+	http.Redirect(write, request, "/", http.StatusSeeOther)
 	return
 }

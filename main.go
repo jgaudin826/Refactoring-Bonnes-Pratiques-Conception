@@ -11,16 +11,16 @@ import (
 
 var port = ":8080"
 
-func home(w http.ResponseWriter, r *http.Request) {
+func home(write http.ResponseWriter, request *http.Request) {
 
 	tmpl, err := template.ParseFiles("./templates/home.html") // Read the home page
 	if err != nil {
 		log.Printf("\033[31mError parsing template: %v\033[0m", err)
-		http.Error(w, "Internal error, template not found.", http.StatusInternalServerError)
+		http.Error(write, "Internal error, template not found.", http.StatusInternalServerError)
 		return
 	}
 	var user api.User
-	email := services.GetCookie(r)
+	email := services.GetCookie(request)
 	if email == "" {
 
 	} else {
@@ -43,10 +43,10 @@ func home(w http.ResponseWriter, r *http.Request) {
 		Bookings: services.GetBookingsByEmail("data/data.json", email),
 	}
 
-	err = tmpl.Execute(w, homePage)
+	err = tmpl.Execute(write, homePage)
 	if err != nil {
 		log.Printf("\033[31mError executing template: %v\033[0m", err)
-		http.Error(w, "Internal error", http.StatusInternalServerError)
+		http.Error(write, "Internal error", http.StatusInternalServerError)
 		return
 	}
 }

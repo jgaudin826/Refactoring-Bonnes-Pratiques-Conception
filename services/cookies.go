@@ -6,17 +6,17 @@ import (
 )
 
 // Gestion des Cookies
-func SetCookie(value string, w http.ResponseWriter) {
+func SetCookie(value string, write http.ResponseWriter) {
 	expiration := time.Now().Add(15 * 24 * time.Hour)
 	cookie := http.Cookie{Name: "email", Value: value, Path: "/", Expires: expiration}
-	http.SetCookie(w, &cookie)
+	http.SetCookie(write, &cookie)
 }
 
-func GetCookie(r *http.Request) string {
+func GetCookie(request *http.Request) string {
 	var cookieUser *http.Cookie
 	var errUser error
 
-	cookieUser, errUser = r.Cookie("email")
+	cookieUser, errUser = request.Cookie("email")
 	if errUser != nil {
 		if errUser == http.ErrNoCookie {
 			// No cookie = Not connected
@@ -26,7 +26,7 @@ func GetCookie(r *http.Request) string {
 	return cookieUser.Value
 }
 
-func DeleteCookie(w http.ResponseWriter) {
+func DeleteCookie(write http.ResponseWriter) {
 	cookie := http.Cookie{Name: "email", Value: "", Path: "/", Expires: time.Unix(0, 0)}
-	http.SetCookie(w, &cookie)
+	http.SetCookie(write, &cookie)
 }

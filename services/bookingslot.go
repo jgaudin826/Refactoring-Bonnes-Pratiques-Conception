@@ -7,21 +7,21 @@ import (
 	"strconv"
 )
 
-func BookingSlot(w http.ResponseWriter, r *http.Request) {
-	email := GetCookie(r)
-	ID := r.FormValue("servicesId")
-	slot := r.FormValue("slot")
+func BookingSlot(write http.ResponseWriter, request *http.Request) {
+	email := GetCookie(request)
+	ID := request.FormValue("servicesId")
+	slot := request.FormValue("slot")
 	if email == "" {
 		fmt.Println("il n'y a pas d'email")
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		http.Redirect(write, request, "/", http.StatusSeeOther)
 		return
 	} else if ID == "" {
 		fmt.Println("il n'y a pas d'ID de service")
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		http.Redirect(write, request, "/", http.StatusSeeOther)
 		return
 	} else if slot == "" {
 		fmt.Println("il n'y a pas de créneau")
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		http.Redirect(write, request, "/", http.StatusSeeOther)
 		return
 	}
 	dataBookings := api.GetBookings("data/data.json")
@@ -29,7 +29,7 @@ func BookingSlot(w http.ResponseWriter, r *http.Request) {
 	serviceID, err := strconv.Atoi(ID)
 	if err != nil {
 		fmt.Println("L'id n'est pas valide !")
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		http.Redirect(write, request, "/", http.StatusSeeOther)
 		return
 	}
 	var service *api.Service
@@ -41,7 +41,7 @@ func BookingSlot(w http.ResponseWriter, r *http.Request) {
 	}
 	if service == nil {
 		fmt.Println("Service introuvable.")
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		http.Redirect(write, request, "/", http.StatusSeeOther)
 		return
 	}
 
@@ -54,14 +54,14 @@ func BookingSlot(w http.ResponseWriter, r *http.Request) {
 	}
 	if !slotExists {
 		fmt.Println("Ce créneau n'existe pas pour ce service.")
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		http.Redirect(write, request, "/", http.StatusSeeOther)
 		return
 	}
 
 	for _, bookings := range dataBookings {
 		if bookings.Email == email && bookings.Service == serviceID && bookings.Slot == slot {
 			fmt.Println("Vous avez déjà réservé ce créneau.")
-			http.Redirect(w, r, "/", http.StatusSeeOther)
+			http.Redirect(write, request, "/", http.StatusSeeOther)
 			return
 		}
 	}
@@ -69,7 +69,7 @@ func BookingSlot(w http.ResponseWriter, r *http.Request) {
 	for _, bookings := range dataBookings {
 		if bookings.Service == serviceID && bookings.Slot == slot {
 			fmt.Println("Ce créneau est déjà complet.")
-			http.Redirect(w, r, "/", http.StatusSeeOther)
+			http.Redirect(write, request, "/", http.StatusSeeOther)
 			return
 		}
 	}
@@ -81,8 +81,7 @@ func BookingSlot(w http.ResponseWriter, r *http.Request) {
 	}
 	api.AddBooking("data/data.json", newBooking)
 	api.RemoveSlotFromService("data/data.json", newBooking.Service, slot)
-	http.Redirect(w, r, "/", http.StatusSeeOther)
-	return
+	http.Redirect(write, request, "/", http.StatusSeeOther)
 }
 
 func GetBookingsByEmail(fileName, email string) []api.Booking {
