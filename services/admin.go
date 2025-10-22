@@ -43,15 +43,8 @@ func CancelBooking(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	} else {
-		isBooking := api.BookingExists("data/data.json", bookingId)
-		if isBooking {
-			api.RemoveBooking("data/data.json", bookingId)
-			http.Redirect(w, r, "/", http.StatusSeeOther)
-			return
-		} else {
-			fmt.Println("Reservation Inexistante !")
-			http.Redirect(w, r, "/", http.StatusSeeOther)
-			return
-		}
+		api.RemoveBooking("data/data.json", bookingId)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
 	}
 }

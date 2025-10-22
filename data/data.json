@@ -4,7 +4,9 @@
       "id": 1,
       "name": "Salle A",
       "type": "room",
-      "slots": null
+      "slots": [
+        "2025-10-09 11:50"
+      ]
     },
     {
       "id": 2,
@@ -28,7 +30,19 @@
       "id": 3,
       "email": "admin@exemple.com",
       "role": "user"
+    },
+    {
+      "id": 4,
+      "email": "jeremy",
+      "role": "user"
     }
   ],
-  "bookings": null
+  "bookings": [
+    {
+      "id": 1,
+      "email": "jeremy",
+      "service": 1,
+      "slot": "2025-10-31 14:53"
+    }
+  ]
 }
