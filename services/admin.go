@@ -43,7 +43,7 @@ func CancelBooking(write http.ResponseWriter, request *http.Request) {
 		return
 	} else {
 		api.RemoveBooking("data/data.json", bookingId)
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		http.Redirect(write, request, "/", http.StatusSeeOther)
 		return
 	}
 }
