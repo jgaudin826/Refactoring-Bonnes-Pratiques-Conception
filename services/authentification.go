@@ -5,6 +5,8 @@ import (
 	"refactoring/api"
 )
 
+// Connects the user by creating a new coockie
+// If no user is found in the dataFile, a new one is creating by calling AddUser
 func Connect(write http.ResponseWriter, request *http.Request) {
 	email := request.FormValue("email")
 	SetCookie(email, write)
@@ -25,11 +27,10 @@ func Connect(write http.ResponseWriter, request *http.Request) {
 		api.AddUser(newUser)
 	}
 	http.Redirect(write, request, "/", http.StatusSeeOther)
-	return
 }
 
+// Disconnects the current user by removing the coockie
 func Disconnect(write http.ResponseWriter, request *http.Request) {
 	DeleteCookie(write)
 	http.Redirect(write, request, "/", http.StatusSeeOther)
-	return
 }

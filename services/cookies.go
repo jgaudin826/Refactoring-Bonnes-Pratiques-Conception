@@ -5,7 +5,6 @@ import (
 	"time"
 )
 
-// Gestion des Cookies
 func SetCookie(value string, write http.ResponseWriter) {
 	expiration := time.Now().Add(15 * 24 * time.Hour)
 	cookie := http.Cookie{Name: "email", Value: value, Path: "/", Expires: expiration}

@@ -7,6 +7,9 @@ import (
 	"strconv"
 )
 
+// Book slot from user submitted form
+// Check if a user is connected and if slot and service exists
+// Calls AddBooking and RemoveSlotFromService
 func BookSlot(write http.ResponseWriter, request *http.Request) {
 	email := GetCookie(request)
 	ID := request.FormValue("servicesId")
@@ -82,16 +85,4 @@ func BookSlot(write http.ResponseWriter, request *http.Request) {
 	api.AddBooking(newBooking)
 	api.RemoveSlotFromService(newBooking.Service, slot)
 	http.Redirect(write, request, "/", http.StatusSeeOther)
-}
-
-func GetBookingsByEmail(email string) []api.Booking {
-	dataBookings := api.GetBookings()
-	var userBookings []api.Booking
-
-	for _, booking := range dataBookings {
-		if booking.Email == email {
-			userBookings = append(userBookings, booking)
-		}
-	}
-	return userBookings
 }

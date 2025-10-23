@@ -8,7 +8,8 @@ import (
 	"time"
 )
 
-func AddService(write http.ResponseWriter, request *http.Request) {
+// Create Service from user submitted form and add it to the dataFile by calling AddService
+func CreateService(write http.ResponseWriter, request *http.Request) {
 
 	nameService := request.FormValue("name")
 	typeService := request.FormValue("type")
@@ -21,7 +22,8 @@ func AddService(write http.ResponseWriter, request *http.Request) {
 	http.Redirect(write, request, "/", http.StatusSeeOther)
 }
 
-func AddSlot(write http.ResponseWriter, request *http.Request) {
+// Create Slot from user submitted form and add it to the dataFile by calling AddSlotToService
+func CreateSlot(write http.ResponseWriter, request *http.Request) {
 	serviceidSlot, err := strconv.Atoi(request.FormValue("serviceid"))
 	slot, errorParse := time.Parse("2006-01-02T15:04", request.FormValue("slot"))
 	if err != nil || errorParse != nil {
@@ -35,6 +37,7 @@ func AddSlot(write http.ResponseWriter, request *http.Request) {
 	}
 }
 
+// Cancel booking by clicking a form button and calling RemoveBooking
 func CancelBooking(write http.ResponseWriter, request *http.Request) {
 	bookingId, err := strconv.Atoi(request.FormValue("bookingId"))
 	if err != nil {
