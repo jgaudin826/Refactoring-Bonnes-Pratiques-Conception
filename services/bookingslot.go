@@ -33,8 +33,8 @@ func BookSlot(write http.ResponseWriter, request *http.Request) {
 	bookings := api.GetBookings()
 	services := api.GetServices()
 
-	serviceID, err := strconv.Atoi(serviceIDStr)
-	if err != nil {
+	serviceID, convertError := strconv.Atoi(serviceIDStr)
+	if convertError != nil {
 		fmt.Println("L'ID du service est invalide.")
 		http.Redirect(write, request, "/", http.StatusSeeOther)
 	}

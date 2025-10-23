@@ -24,9 +24,9 @@ func CreateService(write http.ResponseWriter, request *http.Request) {
 
 // Create Slot from user submitted form and add it to the dataFile by calling AddSlotToService
 func CreateSlot(write http.ResponseWriter, request *http.Request) {
-	serviceidSlot, err := strconv.Atoi(request.FormValue("serviceid"))
+	serviceidSlot, convertError := strconv.Atoi(request.FormValue("serviceid"))
 	slot, errorParse := time.Parse("2006-01-02T15:04", request.FormValue("slot"))
-	if err != nil || errorParse != nil {
+	if convertError != nil || errorParse != nil {
 		fmt.Println("L'id ou le slot n'est pas valide !")
 		http.Redirect(write, request, "/", http.StatusSeeOther)
 		return
@@ -38,8 +38,8 @@ func CreateSlot(write http.ResponseWriter, request *http.Request) {
 
 // Cancel booking by clicking a form button and calling RemoveBooking
 func CancelBooking(write http.ResponseWriter, request *http.Request) {
-	bookingId, err := strconv.Atoi(request.FormValue("bookingId"))
-	if err != nil {
+	bookingId, convertError := strconv.Atoi(request.FormValue("bookingId"))
+	if convertError != nil {
 		fmt.Println("L'id n'est pas valide !")
 		http.Redirect(write, request, "/", http.StatusSeeOther)
 	} else {
