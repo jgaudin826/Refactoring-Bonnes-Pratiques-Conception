@@ -14,18 +14,17 @@
 
   <section class="row card">
     {{ if not .User.Email }}
-      <form action="/Connect" method="post">
+      <form action="/Connect" method="post" class="connect">
         <label>Votre email:
           <input name="email" value="">
         </label>
         <button class="btn">Se connecter</button>
       </form>
-    {{ end }}
-
+    {{ else }}
     <form action="/Disconnect" method="post">
       <button class="btn">Se déconnecter</button>
     </form>
-
+    {{ end }}
     <p>Utilisateur: <b>{{.User.Email}}</b></p>
     <p>Rôle: <b>{{.User.Role}}</b></p>
   </section>
