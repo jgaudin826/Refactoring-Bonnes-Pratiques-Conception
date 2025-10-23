@@ -18,7 +18,6 @@ func GetCookie(request *http.Request) string {
 	cookieUser, errUser = request.Cookie("email")
 	if errUser != nil {
 		if errUser == http.ErrNoCookie {
-			// No cookie = Not connected
 			return ""
 		}
 	}
