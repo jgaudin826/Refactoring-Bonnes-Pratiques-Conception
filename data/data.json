@@ -5,7 +5,8 @@
       "name": "Salle A",
       "type": "room",
       "slots": [
-        "2025-10-09 11:50"
+        "2025-10-09 11:50",
+        "2025-10-31 14:53"
       ]
     },
     {
@@ -37,12 +38,5 @@
       "role": "user"
     }
   ],
-  "bookings": [
-    {
-      "id": 1,
-      "email": "jeremy",
-      "service": 1,
-      "slot": "2025-10-31 14:53"
-    }
-  ]
+  "bookings": null
 }

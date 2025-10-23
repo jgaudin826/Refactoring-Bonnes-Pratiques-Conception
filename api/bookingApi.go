@@ -30,11 +30,13 @@ func AddBooking(fileName string, newBooking Booking) {
 func RemoveBooking(fileName string, bookingID int) {
 	data := GetDataJson(fileName)
 	var updatedBookings []Booking
+	var removedBooking Booking
 	found := false
 
 	for _, bookings := range data.Bookings {
 		if bookings.ID == bookingID {
 			found = true
+			removedBooking = bookings
 			continue
 		}
 		updatedBookings = append(updatedBookings, bookings)
@@ -57,5 +59,6 @@ func RemoveBooking(fileName string, bookingID int) {
 		fmt.Println("Erreur écriture fichier:", errWrite)
 		return
 	}
-
+	AddSlotToService(fileName, removedBooking.Service, removedBooking.Slot)
+	return
 }

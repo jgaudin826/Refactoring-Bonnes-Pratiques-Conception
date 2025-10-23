@@ -6,81 +6,104 @@
   <script src="/static/scripts/app.js" type="module"></script>
   <link rel="stylesheet" href="/static/style/style.css">
 </head>
+
 <body>
-  <!-- Scripts -->
-  
+  <header>
+    <h1>Cas d'étude – Application de gestion de services</h1>
+  </header>
 
-<h1>Cas d'étude – Application de gestion de services</h1>
+  <section class="row card">
+    {{ if not .User.Email }}
+      <form action="/Connect" method="post">
+        <label>Votre email:
+          <input name="email" value="">
+        </label>
+        <button class="btn">Se connecter</button>
+      </form>
+    {{ end }}
 
-<div class="row card">
-  {{ if not .User.Email }}
-    <form action="/Connect" method="post">
-      <label>Votre email: <input name="email" value=""></label>
-      <button class="btn">Se connecter</button>
+    <form action="/Disconnect" method="post">
+      <button class="btn">Se déconnecter</button>
     </form>
-  {{ end }}
-  <form action="/Disconnect" method="post">
-    <button class="btn">Se déconnecter</button>
-  </form>
-  <div>Utilisateur: <b>{{.User.Email}}</b></div>
-  <div>Rôle: <b>{{.User.Role}}</b></div>
-</div>
 
-<div class="row">
-  <div class="card" style="flex:1">
-    <h3>Services</h3>
-    <div id="svc">
-      {{range .Services}}
-        <p>ID: {{.ID}} | Nom: {{.Name}} | Type: {{.Type}}</p>
-        <p>créneaux:
-        {{range .Slots}}
-          - {{.}}
-        {{end}}</p>
-      {{end}}
-    </div>
-  </div>
-  <div class="card" style="flex:1">
-    <h3>Réserver</h3>
-    <form action="/BookingSlot" method="post">
-      <input type="hidden" name="act" value="book">
-      <label>Service ID: <input name="servicesId" type=text list=serviceIdList></label><br>
-      <label>Crenau: <input name="slot" placeholder="2025-10-20 09:00"></label><br>
-      <button class="btn">Réserver</button>
-    </form>
-  </div>
-  <div class="card" style="flex:1">
-    <h3>Mes réservations</h3>
-    <div id="bk">
-      {{range .Bookings}}
-        <p>ID: {{.ID}} | Service ID: {{.Service}} | Créneau: {{.Slot}}</p>
-      {{end}}
-    </div>
-  </div>
-</div>
+    <p>Utilisateur: <b>{{.User.Email}}</b></p>
+    <p>Rôle: <b>{{.User.Role}}</b></p>
+  </section>
 
-{{if eq .User.Role "admin"}}
-<div class="card">
-  <h3>Admin </h3>
-  <form action="/AddService" method="post" class="row">
-    <input type="hidden" name="act" value="addservice">
-    <input name="name" placeholder="Nom du service">
-    <select name="type"><option>room</option><option>equipment</option><option>autre</option></select>
-    <button class="btn">Ajouter service</button>
-  </form>
+  <main class="row">
+    <article class="card" style="flex:1">
+      <h3>Services</h3>
+      <section id="svc">
+        {{range .Services}}
+          <p>
+            ID: {{.ID}} | Nom: {{.Name}} | Type: {{.Type}}
+          </p>
+          <p>
+            créneaux:
+            {{range .Slots}}
+              | {{.}}
+            {{end}}
+          </p>
+        {{end}}
+      </section>
+    </article>
 
-  <form action="/AddSlot" method="post" class="row">
-    <input type="hidden" name="act" value="addslot">
-    <input name="serviceid" type="number" placeholder="Service ID">
-    <input name="slot" type="datetime-local">
-    <button class="btn">Ajouter créneau</button>
-  </form>
+    <article class="card" style="flex:1">
+      <h3>Réserver</h3>
+      <form action="/BookingSlot" method="post">
+        <input type="hidden" name="act" value="book">
 
-  <form action="/CancelBooking" method="post" class="row">
-    <input type="hidden" name="act" value="cancel">
-    <input name="bookingId" type="number" placeholder="Booking ID">
-    <button class="btn danger">Annuler réservation</button>
-  </form>
-</div>
-{{end}}
+        <label>
+          Service ID:
+          <input name="servicesId" type="text" list="serviceIdList">
+        </label><br>
+
+        <label>
+          Crenau:
+          <input name="slot" placeholder="2025-10-20 09:00">
+        </label><br>
+
+        <button class="btn">Réserver</button>
+      </form>
+    </article>
+
+    <article class="card" style="flex:1">
+      <h3>Mes réservations</h3>
+      <section id="bk">
+        {{range .Bookings}}
+          <p>
+            ID: {{.ID}} | Service ID: {{.Service}} | Créneau: {{.Slot}}
+            {{if eq $.User.Role "admin"}} {{.Email}} {{end}}
+          </p>
+          <form action="/CancelBooking" method="post" class="row">
+            <input name="bookingId" type="number" hidden value="{{.ID}}">
+            <button class="btn danger">Annuler réservation</button>
+          </form>
+        {{end}}
+      </section>
+    </article>
+  </main>
+
+  {{if eq .User.Role "admin"}}
+    <aside class="card">
+      <h3>Admin</h3>
+
+      <form action="/AddService" method="post" class="row">
+        <input name="name" placeholder="Nom du service">
+        <select name="type">
+          <option>room</option>
+          <option>equipment</option>
+          <option>autre</option>
+        </select>
+        <button class="btn">Ajouter service</button>
+      </form>
+
+      <form action="/AddSlot" method="post" class="row">
+        <input name="serviceid" type="number" placeholder="Service ID">
+        <input name="slot" type="datetime-local">
+        <button class="btn">Ajouter créneau</button>
+      </form>
+    </aside>
+  {{end}}
 </body>
 </html>

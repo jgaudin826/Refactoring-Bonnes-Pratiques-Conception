@@ -20,6 +20,7 @@ func home(write http.ResponseWriter, request *http.Request) {
 		return
 	}
 	var user api.User
+	var bookings []api.Booking
 	email := services.GetCookie(request)
 	if email == "" {
 
@@ -32,7 +33,11 @@ func home(write http.ResponseWriter, request *http.Request) {
 			}
 		}
 	}
-
+	if user.Role == "admin" {
+		bookings = api.GetBookings("data/data.json")
+	} else {
+		bookings = services.GetBookingsByEmail("data/data.json", email)
+	}
 	homePage := struct {
 		User     api.User
 		Services []api.Service
@@ -40,7 +45,7 @@ func home(write http.ResponseWriter, request *http.Request) {
 	}{
 		User:     user,
 		Services: api.GetServices("data/data.json"),
-		Bookings: services.GetBookingsByEmail("data/data.json", email),
+		Bookings: bookings,
 	}
 
 	err = tmpl.Execute(write, homePage)

@@ -1,9 +1,67 @@
-body{font-family:Arial;margin:20px}
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 20px;
+  background: #fafafa;
+  color: #333;
+}
 
-.row{display:flex;gap:12px;margin-bottom:8px}
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-.card{box-shadow: 0 0 0 1px #ddd; border:1px solid #aaa;padding:10px;border-radius:6px}
+h1, h3 {
+  margin: 0 0 10px 0;
+}
 
-.btn{padding:6px 8px;border:1px solid #222;background:#f2f2f2;cursor:pointer}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+}
 
-.danger{background:#ffd0d0}
+.card {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+input, select, button {
+  padding: 8px;
+  margin-top: 6px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #bbb;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+button.btn {
+  background: #e5e5e5;
+  border: 1px solid #999;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button.btn:hover {
+  background: #ddd;
+}
+
+button.danger {
+  background: #fddcdc;
+  border-color: #f99;
+}
+
+button.danger:hover {
+  background: #f8bfbf;
+}
+
+p {
+  margin: 6px 0;
+}
