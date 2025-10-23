@@ -25,11 +25,9 @@ func Connect(write http.ResponseWriter, request *http.Request) {
 		api.AddUser("data/data.json", newUser)
 	}
 	http.Redirect(write, request, "/", http.StatusSeeOther)
-	return
 }
 
 func Disconnect(write http.ResponseWriter, request *http.Request) {
 	DeleteCookie(write)
 	http.Redirect(write, request, "/", http.StatusSeeOther)
-	return
 }

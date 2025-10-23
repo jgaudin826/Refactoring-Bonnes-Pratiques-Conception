@@ -5,7 +5,6 @@ import (
 	"time"
 )
 
-// Gestion des Cookies
 func SetCookie(value string, write http.ResponseWriter) {
 	expiration := time.Now().Add(15 * 24 * time.Hour)
 	cookie := http.Cookie{Name: "email", Value: value, Path: "/", Expires: expiration}
@@ -19,7 +18,6 @@ func GetCookie(request *http.Request) string {
 	cookieUser, errUser = request.Cookie("email")
 	if errUser != nil {
 		if errUser == http.ErrNoCookie {
-			// No cookie = Not connected
 			return ""
 		}
 	}
