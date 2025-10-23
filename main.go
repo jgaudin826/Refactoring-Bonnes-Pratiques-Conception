@@ -66,8 +66,8 @@ func main() {
 	// ROUTES DES FORMULAIRES
 	http.HandleFunc("/Connect", services.Connect)
 	http.HandleFunc("/Disconnect", services.Disconnect)
-	http.HandleFunc("/AddService", services.AddService)
-	http.HandleFunc("/AddSlot", services.AddSlot)
+	http.HandleFunc("/CreateService", services.CreateService)
+	http.HandleFunc("/CreateSlot", services.CreateSlot)
 	http.HandleFunc("/CancelBooking", services.CancelBooking)
 	http.HandleFunc("/BookingSlot", services.BookSlot)
 

@@ -87,7 +87,7 @@
     <aside class="card">
       <h3>Admin</h3>
 
-      <form action="/AddService" method="post" class="row">
+      <form action="/CreateService" method="post" class="row">
         <input name="name" placeholder="Nom du service">
         <select name="type">
           <option>room</option>
@@ -97,7 +97,7 @@
         <button class="btn">Ajouter service</button>
       </form>
 
-      <form action="/AddSlot" method="post" class="row">
+      <form action="/CreateSlot" method="post" class="row">
         <input name="serviceid" type="number" placeholder="Service ID">
         <input name="slot" type="datetime-local">
         <button class="btn">Ajouter créneau</button>
