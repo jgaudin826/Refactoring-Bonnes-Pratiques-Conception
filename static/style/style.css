@@ -37,10 +37,6 @@ input, select, button {
   border: 1px solid #bbb;
 }
 
-label {
-  display: block;
-  margin-bottom: 8px;
-}
 
 button.btn {
   background: #e5e5e5;
