@@ -7,8 +7,8 @@ import (
 	"strings"
 )
 
-func AddSlotToService(fileName string, serviceID int, newSlots string) {
-	allData := GetDataJson(fileName)
+func AddSlotToService(serviceID int, newSlots string) {
+	allData := GetDataJson(dataFileName)
 	found := false
 
 	for index, service := range allData.Services {
@@ -30,7 +30,7 @@ func AddSlotToService(fileName string, serviceID int, newSlots string) {
 		return
 	}
 
-	errorJsonWrite := os.WriteFile(fileName, jsonData, 0644)
+	errorJsonWrite := os.WriteFile(dataFileName, jsonData, 0644)
 	if errorJsonWrite != nil {
 		fmt.Printf("Erreur écriture fichier: %v\n", errorJsonWrite)
 		return
@@ -38,8 +38,8 @@ func AddSlotToService(fileName string, serviceID int, newSlots string) {
 	return
 }
 
-func RemoveSlotFromService(fileName string, serviceID int, slotToRemove string) {
-	allData := GetDataJson(fileName)
+func RemoveSlotFromService(serviceID int, slotToRemove string) {
+	allData := GetDataJson(dataFileName)
 	found := false
 
 	for i, service := range allData.Services {
@@ -68,7 +68,7 @@ func RemoveSlotFromService(fileName string, serviceID int, slotToRemove string) 
 		return
 	}
 
-	if err := os.WriteFile(fileName, jsonData, 0644); err != nil {
+	if err := os.WriteFile(dataFileName, jsonData, 0644); err != nil {
 		fmt.Printf("Erreur écriture fichier: %v\n", err)
 		return
 	}

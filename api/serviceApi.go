@@ -6,13 +6,13 @@ import (
 	"os"
 )
 
-func GetServices(fileName string) []Service {
-	allData := GetDataJson(fileName)
+func GetServices() []Service {
+	allData := GetDataJson(dataFileName)
 	return allData.Services
 }
 
-func AddService(fileName string, newService Service) {
-	allData := GetDataJson(fileName)
+func AddService(newService Service) {
+	allData := GetDataJson(dataFileName)
 	allData.Services = append(allData.Services, newService)
 
 	jsonData, errorJsonMarshalIndent := json.MarshalIndent(allData, "", "  ")
@@ -21,7 +21,7 @@ func AddService(fileName string, newService Service) {
 		return
 	}
 
-	errorJsonWrite := os.WriteFile(fileName, jsonData, 0644)
+	errorJsonWrite := os.WriteFile(dataFileName, jsonData, 0644)
 	if errorJsonWrite != nil {
 		fmt.Printf("Erreur écriture fichier: %v\n", errorJsonWrite)
 		return

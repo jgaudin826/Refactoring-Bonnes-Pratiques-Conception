@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 )
 
+const dataFileName string = "data/data.json"
+
 type Service struct {
 	ID    int      `json:"id"`
 	Name  string   `json:"name"`
@@ -35,14 +37,14 @@ type Data struct {
 func GetDataJson(fileName string) Data {
 	allData, errorJsonRead := ioutil.ReadFile(fileName)
 	if errorJsonRead != nil {
-		fmt.Println("Erreur lecture fichier:", errorJsonRead, "\n")
+		fmt.Println("Erreur lecture fichier:", errorJsonRead)
 		return Data{}
 	}
 
 	var result Data
 	errorParsing := json.Unmarshal(allData, &result)
 	if errorParsing != nil {
-		fmt.Println("Erreur parsing JSON:", errorParsing, "\n")
+		fmt.Println("Erreur parsing JSON:", errorParsing)
 		return Data{}
 	}
 	return result
