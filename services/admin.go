@@ -31,7 +31,6 @@ func AddSlot(write http.ResponseWriter, request *http.Request) {
 	} else {
 		api.AddSlotToService(serviceidSlot, slot.Format("2006-01-02 15:04"))
 		http.Redirect(write, request, "/", http.StatusSeeOther)
-		return
 	}
 }
 
@@ -40,10 +39,8 @@ func CancelBooking(write http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		fmt.Println("L'id n'est pas valide !")
 		http.Redirect(write, request, "/", http.StatusSeeOther)
-		return
 	} else {
 		api.RemoveBooking(bookingId)
 		http.Redirect(write, request, "/", http.StatusSeeOther)
-		return
 	}
 }

@@ -12,57 +12,58 @@ import (
 var port = ":8080"
 
 func home(write http.ResponseWriter, request *http.Request) {
-
-	tmpl, err := template.ParseFiles("./templates/home.html") // Read the home page
-	if err != nil {
-		log.Printf("\033[31mError parsing template: %v\033[0m", err)
-		http.Error(write, "Internal error, template not found.", http.StatusInternalServerError)
+	homeTemplate, parseError := template.ParseFiles("./templates/home.html") // Lecture du template de la page d'accueil
+	if parseError != nil {
+		log.Printf("\033[31mErreur lors du parsing du template: %v\033[0m", parseError)
+		http.Error(write, "Erreur interne : template introuvable.", http.StatusInternalServerError)
 		return
 	}
-	var user api.User
-	var bookings []api.Booking
-	email := services.GetCookie(request)
-	if email == "" {
 
-	} else {
-		userList := api.GetUsers()
-		for _, users := range userList {
-			if users.Email == email {
-				user = users
+	var currentUser api.User
+	var userBookings []api.Booking
+
+	userEmail := services.GetCookie(request)
+	if userEmail != "" {
+		users := api.GetUsers()
+		for _, user := range users {
+			if user.Email == userEmail {
+				currentUser = user
 				break
 			}
 		}
 	}
-	if user.Role == "admin" {
-		bookings = api.GetBookings()
+
+	if currentUser.Role == "admin" {
+		userBookings = api.GetBookings()
 	} else {
-		bookings = api.GetBookingsByEmail(email)
+		userBookings = api.GetBookingsByEmail(userEmail)
 	}
-	homePage := struct {
+
+	pageData := struct {
 		User     api.User
 		Services []api.Service
 		Bookings []api.Booking
 	}{
-		User:     user,
+		User:     currentUser,
 		Services: api.GetServices(),
-		Bookings: bookings,
+		Bookings: userBookings,
 	}
 
-	err = tmpl.Execute(write, homePage)
-	if err != nil {
-		log.Printf("\033[31mError executing template: %v\033[0m", err)
-		http.Error(write, "Internal error", http.StatusInternalServerError)
+	execError := homeTemplate.Execute(write, pageData)
+	if execError != nil {
+		log.Printf("\033[31mErreur lors de l'exécution du template: %v\033[0m", execError)
+		http.Error(write, "Erreur interne", http.StatusInternalServerError)
 		return
 	}
 }
 
 func main() {
-	FileServer := http.FileServer(http.Dir("static"))
-	http.Handle("/static/", http.StripPrefix("/static/", FileServer))
+	fileServer := http.FileServer(http.Dir("static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fileServer))
 
 	http.HandleFunc("/", home)
 
-	// FORMS
+	// ROUTES DES FORMULAIRES
 	http.HandleFunc("/Connect", services.Connect)
 	http.HandleFunc("/Disconnect", services.Disconnect)
 	http.HandleFunc("/AddService", services.AddService)
@@ -70,10 +71,11 @@ func main() {
 	http.HandleFunc("/CancelBooking", services.CancelBooking)
 	http.HandleFunc("/BookingSlot", services.BookSlot)
 
-	fmt.Println("Server Start at:")
-	fmt.Println("http://localhost" + port)
+	fmt.Println("Server started at:")
+	fmt.Println("👉 http://localhost" + port)
 
-	if err := http.ListenAndServe(port, nil); err != nil {
-		log.Fatal(err)
+	startError := http.ListenAndServe(port, nil)
+	if startError != nil {
+		log.Fatal(startError)
 	}
 }

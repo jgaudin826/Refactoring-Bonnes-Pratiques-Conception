@@ -6,20 +6,20 @@ import (
 )
 
 func Connect(write http.ResponseWriter, request *http.Request) {
-	email := request.FormValue("email")
-	SetCookie(email, write)
-	emailExists := false
+	userEmail := request.FormValue("email")
+	SetCookie(userEmail, write)
+	userExists := false
 	userList := api.GetUsers()
 	for _, user := range userList {
-		if user.Email == email {
-			emailExists = true
+		if user.Email == userEmail {
+			userExists = true
 			break
 		}
 	}
-	if !emailExists {
+	if !userExists {
 		newUser := api.User{
 			ID:    len(userList) + 1,
-			Email: email,
+			Email: userEmail,
 			Role:  "user",
 		}
 		api.AddUser(newUser)
