@@ -17,13 +17,13 @@ func AddService(fileName string, newService Service) {
 
 	jsonData, errorJsonMarshalIndent := json.MarshalIndent(allData, "", "  ")
 	if errorJsonMarshalIndent != nil {
-		fmt.Printf("Erreur conversion JSON: %v\n", errorJsonMarshalIndent, "\n")
+		fmt.Printf("Erreur conversion JSON: %v\n", errorJsonMarshalIndent)
 		return
 	}
 
 	errorJsonWrite := os.WriteFile(fileName, jsonData, 0644)
 	if errorJsonWrite != nil {
-		fmt.Printf("Erreur écriture fichier: %v\n", errorJsonWrite, "\n")
+		fmt.Printf("Erreur écriture fichier: %v\n", errorJsonWrite)
 		return
 	}
 }

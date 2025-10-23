@@ -16,13 +16,13 @@ func AddBooking(fileName string, newBooking Booking) {
 	allData.Bookings = append(allData.Bookings, newBooking)
 	jsonData, errorJsonMarshal := json.Marshal(allData)
 	if errorJsonMarshal != nil {
-		fmt.Printf("Erreur conversion JSON: %v\n", errorJsonMarshal, "\n")
+		fmt.Printf("Erreur conversion JSON: %v\n", errorJsonMarshal)
 		return
 	}
 
 	errorJsonWrite := os.WriteFile(fileName, jsonData, 0644)
 	if errorJsonWrite != nil {
-		fmt.Printf("Erreur écriture fichier: %v\n", errorJsonWrite, "\n")
+		fmt.Printf("Erreur écriture fichier: %v\n", errorJsonWrite)
 		return
 	}
 }
