@@ -25,7 +25,7 @@ func home(write http.ResponseWriter, request *http.Request) {
 	if email == "" {
 
 	} else {
-		userList := api.GetUsers("data/data.json")
+		userList := api.GetUsers()
 		for _, users := range userList {
 			if users.Email == email {
 				user = users
@@ -34,9 +34,9 @@ func home(write http.ResponseWriter, request *http.Request) {
 		}
 	}
 	if user.Role == "admin" {
-		bookings = api.GetBookings("data/data.json")
+		bookings = api.GetBookings()
 	} else {
-		bookings = services.GetBookingsByEmail("data/data.json", email)
+		bookings = api.GetBookingsByEmail(email)
 	}
 	homePage := struct {
 		User     api.User
@@ -44,7 +44,7 @@ func home(write http.ResponseWriter, request *http.Request) {
 		Bookings []api.Booking
 	}{
 		User:     user,
-		Services: api.GetServices("data/data.json"),
+		Services: api.GetServices(),
 		Bookings: bookings,
 	}
 
@@ -68,7 +68,7 @@ func main() {
 	http.HandleFunc("/AddService", services.AddService)
 	http.HandleFunc("/AddSlot", services.AddSlot)
 	http.HandleFunc("/CancelBooking", services.CancelBooking)
-	http.HandleFunc("/BookingSlot", services.BookingSlot)
+	http.HandleFunc("/BookingSlot", services.BookSlot)
 
 	fmt.Println("Server Start at:")
 	fmt.Println("http://localhost" + port)

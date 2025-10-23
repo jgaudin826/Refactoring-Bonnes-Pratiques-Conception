@@ -13,11 +13,11 @@ func AddService(write http.ResponseWriter, request *http.Request) {
 	nameService := request.FormValue("name")
 	typeService := request.FormValue("type")
 	newService := api.Service{
-		ID:   len(api.GetServices("data/data.json")) + 1,
+		ID:   len(api.GetServices()) + 1,
 		Name: nameService,
 		Type: typeService,
 	}
-	api.AddService("data/data.json", newService)
+	api.AddService(newService)
 	http.Redirect(write, request, "/", http.StatusSeeOther)
 }
 
@@ -29,7 +29,7 @@ func AddSlot(write http.ResponseWriter, request *http.Request) {
 		http.Redirect(write, request, "/", http.StatusSeeOther)
 		return
 	} else {
-		api.AddSlotToService("data/data.json", serviceidSlot, slot.Format("2006-01-02 15:04"))
+		api.AddSlotToService(serviceidSlot, slot.Format("2006-01-02 15:04"))
 		http.Redirect(write, request, "/", http.StatusSeeOther)
 		return
 	}
@@ -42,7 +42,7 @@ func CancelBooking(write http.ResponseWriter, request *http.Request) {
 		http.Redirect(write, request, "/", http.StatusSeeOther)
 		return
 	} else {
-		api.RemoveBooking("data/data.json", bookingId)
+		api.RemoveBooking(bookingId)
 		http.Redirect(write, request, "/", http.StatusSeeOther)
 		return
 	}

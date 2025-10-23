@@ -6,13 +6,25 @@ import (
 	"os"
 )
 
-func GetBookings(fileName string) []Booking {
-	allData := GetDataJson(fileName)
+func GetBookings() []Booking {
+	allData := GetDataJson(dataFileName)
 	return allData.Bookings
 }
 
-func AddBooking(fileName string, newBooking Booking) {
-	allData := GetDataJson(fileName)
+func GetBookingsByEmail(email string) []Booking {
+	dataBookings := GetBookings()
+	var userBookings []Booking
+
+	for _, booking := range dataBookings {
+		if booking.Email == email {
+			userBookings = append(userBookings, booking)
+		}
+	}
+	return userBookings
+}
+
+func AddBooking(newBooking Booking) {
+	allData := GetDataJson(dataFileName)
 	allData.Bookings = append(allData.Bookings, newBooking)
 	jsonData, errorJsonMarshal := json.Marshal(allData)
 	if errorJsonMarshal != nil {
@@ -20,15 +32,15 @@ func AddBooking(fileName string, newBooking Booking) {
 		return
 	}
 
-	errorJsonWrite := os.WriteFile(fileName, jsonData, 0644)
+	errorJsonWrite := os.WriteFile(dataFileName, jsonData, 0644)
 	if errorJsonWrite != nil {
 		fmt.Printf("Erreur écriture fichier: %v\n", errorJsonWrite)
 		return
 	}
 }
 
-func RemoveBooking(fileName string, bookingID int) {
-	data := GetDataJson(fileName)
+func RemoveBooking(bookingID int) {
+	data := GetDataJson(dataFileName)
 	var updatedBookings []Booking
 	var removedBooking Booking
 	found := false
@@ -54,11 +66,11 @@ func RemoveBooking(fileName string, bookingID int) {
 		return
 	}
 
-	errWrite := os.WriteFile(fileName, jsonData, 0644)
+	errWrite := os.WriteFile(dataFileName, jsonData, 0644)
 	if errWrite != nil {
 		fmt.Println("Erreur écriture fichier:", errWrite)
 		return
 	}
-	AddSlotToService(fileName, removedBooking.Service, removedBooking.Slot)
+	AddSlotToService(removedBooking.Service, removedBooking.Slot)
 	return
 }

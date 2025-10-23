@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func BookingSlot(write http.ResponseWriter, request *http.Request) {
+func BookSlot(write http.ResponseWriter, request *http.Request) {
 	email := GetCookie(request)
 	ID := request.FormValue("servicesId")
 	slot := request.FormValue("slot")
@@ -24,8 +24,8 @@ func BookingSlot(write http.ResponseWriter, request *http.Request) {
 		http.Redirect(write, request, "/", http.StatusSeeOther)
 		return
 	}
-	dataBookings := api.GetBookings("data/data.json")
-	dataServices := api.GetServices("data/data.json")
+	dataBookings := api.GetBookings()
+	dataServices := api.GetServices()
 	serviceID, err := strconv.Atoi(ID)
 	if err != nil {
 		fmt.Println("L'id n'est pas valide !")
@@ -79,13 +79,13 @@ func BookingSlot(write http.ResponseWriter, request *http.Request) {
 		Service: serviceID,
 		Slot:    slot,
 	}
-	api.AddBooking("data/data.json", newBooking)
-	api.RemoveSlotFromService("data/data.json", newBooking.Service, slot)
+	api.AddBooking(newBooking)
+	api.RemoveSlotFromService(newBooking.Service, slot)
 	http.Redirect(write, request, "/", http.StatusSeeOther)
 }
 
-func GetBookingsByEmail(fileName, email string) []api.Booking {
-	dataBookings := api.GetBookings(fileName)
+func GetBookingsByEmail(email string) []api.Booking {
+	dataBookings := api.GetBookings()
 	var userBookings []api.Booking
 
 	for _, booking := range dataBookings {
