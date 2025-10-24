@@ -13,7 +13,7 @@ var port = ":8080"
 
 // handler for the home page
 func home(write http.ResponseWriter, request *http.Request) {
-	homeTemplate, parseError := template.ParseFiles("./templates/home.html") // Lecture du template de la page d'accueil
+	homeTemplate, parseError := template.ParseFiles("./templates/home.html")
 	if parseError != nil {
 		log.Printf("\033[31mErreur lors du parsing du template: %v\033[0m", parseError)
 		http.Error(write, "Erreur interne : template introuvable.", http.StatusInternalServerError)
