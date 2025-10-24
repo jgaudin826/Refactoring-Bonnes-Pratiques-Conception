@@ -6,8 +6,10 @@ import (
 	"io/ioutil"
 )
 
+// dataFileName is the path to the JSON data file
 const dataFileName string = "data/data.json"
 
+// Service represents a service with its details
 type Service struct {
 	ID    int      `json:"id"`
 	Name  string   `json:"name"`
@@ -15,12 +17,14 @@ type Service struct {
 	Slots []string `json:"slots"`
 }
 
+// User represents a user with their details
 type User struct {
 	ID    int    `json:"id"`
 	Email string `json:"email"`
 	Role  string `json:"role"`
 }
 
+// Booking represents a booking made by a user for a service
 type Booking struct {
 	ID      int    `json:"id"`
 	Email   string `json:"email"`
@@ -28,6 +32,7 @@ type Booking struct {
 	Slot    string `json:"slot"`
 }
 
+// Data struct to hold all data from the JSON file
 type Data struct {
 	Services []Service `json:"services"`
 	Users    []User    `json:"users"`

@@ -11,6 +11,7 @@ import (
 
 var port = ":8080"
 
+// handler for the home page
 func home(write http.ResponseWriter, request *http.Request) {
 	homeTemplate, parseError := template.ParseFiles("./templates/home.html") // Lecture du template de la page d'accueil
 	if parseError != nil {
@@ -57,13 +58,12 @@ func home(write http.ResponseWriter, request *http.Request) {
 	}
 }
 
+// main function to start the server and define routes
 func main() {
 	fileServer := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fileServer))
 
 	http.HandleFunc("/", home)
-
-	// ROUTES DES FORMULAIRES
 	http.HandleFunc("/Connect", services.Connect)
 	http.HandleFunc("/Disconnect", services.Disconnect)
 	http.HandleFunc("/CreateService", services.CreateService)
