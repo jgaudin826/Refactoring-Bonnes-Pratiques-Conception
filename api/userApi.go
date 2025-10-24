@@ -6,11 +6,14 @@ import (
 	"os"
 )
 
+// GetUsers retrieves all users from the data file
+// Returns a slice of User structs
 func GetUsers() []User {
 	allData := GetDataJson(dataFileName)
 	return allData.Users
 }
 
+// AddUser adds a new user to the data file
 func AddUser(newUser User) {
 	allData := GetDataJson(dataFileName)
 	allData.Users = append(allData.Users, newUser)

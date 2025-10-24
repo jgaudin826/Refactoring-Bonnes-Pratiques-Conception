@@ -6,11 +6,15 @@ import (
 	"os"
 )
 
+// GetBookings retrieves all bookings from the data file
+// Returns a slice of Booking structs
 func GetBookings() []Booking {
 	allData := GetDataJson(dataFileName)
 	return allData.Bookings
 }
 
+// GetBookingsByEmail retrieves bookings for a specific user by email
+// Returns a slice of Booking structs
 func GetBookingsByEmail(email string) []Booking {
 	dataBookings := GetBookings()
 	var userBookings []Booking
@@ -23,6 +27,7 @@ func GetBookingsByEmail(email string) []Booking {
 	return userBookings
 }
 
+// AddBooking adds a new booking to the data file
 func AddBooking(newBooking Booking) {
 	allData := GetDataJson(dataFileName)
 	allData.Bookings = append(allData.Bookings, newBooking)
@@ -39,6 +44,7 @@ func AddBooking(newBooking Booking) {
 	}
 }
 
+// RemoveBooking removes a booking by its ID from the data file
 func RemoveBooking(bookingID int) {
 	data := GetDataJson(dataFileName)
 	var updatedBookings []Booking

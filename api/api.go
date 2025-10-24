@@ -34,6 +34,9 @@ type Data struct {
 	Bookings []Booking `json:"bookings"`
 }
 
+// GetDataJson reads and parses the JSON data file
+// Takes the file name as input
+// Returns a Data struct containing services, users, and bookings
 func GetDataJson(fileName string) Data {
 	allData, errorJsonRead := ioutil.ReadFile(fileName)
 	if errorJsonRead != nil {

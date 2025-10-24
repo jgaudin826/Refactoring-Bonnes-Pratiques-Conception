@@ -6,11 +6,14 @@ import (
 	"os"
 )
 
+// GetServices retrieves all services from the data file
+// Returns a slice of Service structs
 func GetServices() []Service {
 	allData := GetDataJson(dataFileName)
 	return allData.Services
 }
 
+// AddService adds a new service to the data file
 func AddService(newService Service) {
 	allData := GetDataJson(dataFileName)
 	allData.Services = append(allData.Services, newService)

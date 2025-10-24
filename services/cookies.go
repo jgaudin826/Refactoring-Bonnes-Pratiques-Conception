@@ -5,12 +5,14 @@ import (
 	"time"
 )
 
+// set a cookie in the user's browser
 func SetCookie(value string, write http.ResponseWriter) {
 	expiration := time.Now().Add(15 * 24 * time.Hour)
 	cookie := http.Cookie{Name: "email", Value: value, Path: "/", Expires: expiration}
 	http.SetCookie(write, &cookie)
 }
 
+// get a cookie from the user's browser
 func GetCookie(request *http.Request) string {
 	var cookieUser *http.Cookie
 	var errUser error
@@ -24,6 +26,7 @@ func GetCookie(request *http.Request) string {
 	return cookieUser.Value
 }
 
+// delete a cookie from the user's browser
 func DeleteCookie(write http.ResponseWriter) {
 	cookie := http.Cookie{Name: "email", Value: "", Path: "/", Expires: time.Unix(0, 0)}
 	http.SetCookie(write, &cookie)

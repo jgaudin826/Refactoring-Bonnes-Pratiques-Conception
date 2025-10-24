@@ -7,6 +7,9 @@ import (
 	"strings"
 )
 
+// AddSlotToService adds a new slot to a service by its ID
+// Check if the service already exists
+// Updates the data file with the new slot
 func AddSlotToService(serviceID int, newSlots string) {
 	allData := GetDataJson(dataFileName)
 	found := false
@@ -38,6 +41,8 @@ func AddSlotToService(serviceID int, newSlots string) {
 	return
 }
 
+// RemoveSlotFromService removes a slot from a service by its ID
+// checks if the service exists and updates the data file
 func RemoveSlotFromService(serviceID int, slotToRemove string) {
 	allData := GetDataJson(dataFileName)
 	found := false
